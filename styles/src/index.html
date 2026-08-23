@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echo Step: The Sonic Bridge</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <!-- FX Canvas for Particle Shattering & Glowing Rings -->
+    <canvas id="fx-canvas"></canvas>
+
+    <!-- Top Navigation HUD -->
+    <header class="game-header">
+        <div class="logo-area">
+            <h1 class="logo-title">ECHO STEP</h1>
+            <span id="hud-level-badge" class="level-badge">Level 1 / 5</span>
+        </div>
+
+        <div class="hud-controls">
+            <div class="stat-pill">
+                <span>Deaths: </span><strong id="hud-death-count">0</strong>
+            </div>
+            <button id="btn-toggle-sound" class="btn-icon" title="Toggle Sound">🔊 Sound: On</button>
+        </div>
+    </header>
+
+    <!-- Practice / Tone Preview Bar -->
+    <section class="practice-bar">
+        <span>Tone Test:</span>
+        <button id="btn-practice-left" class="btn-practice btn-practice-left" title="Click to test Left Tone (Cyan, C4)">◀ Test Left (Cyan)</button>
+        <button id="btn-practice-right" class="btn-practice btn-practice-right" title="Click to test Right Tone (Magenta, G4)">▶ Test Right (Magenta)</button>
+        <button id="btn-replay-tune" class="btn-icon" style="margin-left: 10px;" title="Replay Melody (Hotkey: R)">🔄 Replay Tune [R]</button>
+    </section>
+
+    <!-- Status & Visualizer Banner -->
+    <section class="melody-status-banner">
+        <h2 id="status-title" class="status-title">The Whispering Steps</h2>
+        <p id="status-desc" class="status-desc">Listen to the melody sequence and memorize the path of Left and Right tones.</p>
+        <div id="tune-visualizer-dots" class="tune-visualizer-dots">
+            <!-- Dynamic note visualizer dots injected here -->
+        </div>
+    </section>
+
+    <!-- 3D Bridge Viewport -->
+    <main id="bridge-viewport" class="bridge-viewport">
+        <div id="bridge-path-container" class="bridge-path-container">
+            <!-- Dynamic Start, Paired Left/Right tiles, and Finish Platform rendered here -->
+        </div>
+    </main>
+
+    <!-- Jump Controls (Mouse & Touch) -->
+    <footer class="jump-controls">
+        <button id="btn-jump-left" class="btn-jump btn-jump-left">
+            <span>◀ JUMP LEFT</span>
+            <span class="key-hint">[Key: A / ◄]</span>
+        </button>
+
+        <button id="btn-jump-right" class="btn-jump btn-jump-right">
+            <span>JUMP RIGHT ▶</span>
+            <span class="key-hint">[Key: D / ►]</span>
+        </button>
+    </footer>
+
+    <!-- Grand Victory Modal -->
+    <div id="modal-victory" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-icon">🏆</div>
+            <h2 class="modal-title" style="color: var(--color-gold);">SONIC MASTER!</h2>
+            <p class="modal-desc">
+                Incredible ear and memory! You have conquered all 5 levels of the Sonic Bridge, mastering the complete sequence of harmonious tones across the chasm.
+            </p>
+            <p id="victory-death-summary" style="margin-bottom: 20px; font-weight: 700; color: var(--text-main); font-family: var(--font-mono);"></p>
+            <button id="btn-restart-game" class="btn-primary">Play Again</button>
+        </div>
+    </div>
+
+    <!-- Application Script -->
+    <script src="src/game.js"></script>
+</body>
+</html>
