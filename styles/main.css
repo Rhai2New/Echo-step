@@ -1,0 +1,538 @@
+/* Echo Step: The Sonic Bridge - Master Stylesheet */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&family=Space+Grotesk:wght@500;700&display=swap');
+
+:root {
+    --bg-dark: #070913;
+    --bg-surface: rgba(15, 23, 42, 0.75);
+    --bg-surface-elevated: #1e293b;
+    
+    --color-left: #06b6d4;
+    --color-left-glow: #22d3ee;
+    --color-left-dark: #083344;
+    
+    --color-right: #f43f5e;
+    --color-right-glow: #fb7185;
+    --color-right-dark: #4c0519;
+    
+    --color-gold: #facc15;
+    --color-success: #10b981;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    
+    --font-heading: 'Outfit', sans-serif;
+    --font-mono: 'Space Grotesk', monospace;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+body {
+    background-color: #0b1021;
+    /* New high-altitude atmosphere gradients */
+    background-image: 
+        radial-gradient(ellipse at top, rgba(56, 189, 248, 0.25) 0%, transparent 50%),
+        radial-gradient(ellipse at bottom, rgba(168, 85, 247, 0.15) 0%, transparent 60%),
+        linear-gradient(180deg, transparent 0%, rgba(15, 23, 42, 0.8) 100%);
+    color: var(--text-main);
+    font-family: var(--font-heading);
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#fx-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 100;
+}
+
+/* ================= TOP HUD ================= */
+.game-header {
+    width: 100%;
+    max-width: 1000px;
+    padding: 18px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-surface);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-title {
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, #fff 0%, #22d3ee 50%, #fb7185 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.level-badge {
+    background: rgba(250, 204, 21, 0.15);
+    border: 1px solid var(--color-gold);
+    color: var(--color-gold);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 13px;
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+.hud-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.stat-pill {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.stat-pill strong {
+    color: var(--text-main);
+    font-family: var(--font-mono);
+}
+
+.btn-icon {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--text-main);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-icon:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: #fff;
+    transform: translateY(-1px);
+}
+
+/* ================= PRACTICE / TONE PREVIEW BAR ================= */
+.practice-bar {
+    width: 100%;
+    max-width: 1000px;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    background: rgba(15, 23, 42, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.btn-practice {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.btn-practice-left {
+    background: var(--color-left-dark);
+    color: var(--color-left-glow);
+    border-color: var(--color-left);
+}
+
+.btn-practice-left:hover {
+    background: var(--color-left);
+    color: #000;
+    box-shadow: 0 0 16px var(--color-left-glow);
+}
+
+.btn-practice-right {
+    background: var(--color-right-dark);
+    color: var(--color-right-glow);
+    border-color: var(--color-right);
+}
+
+.btn-practice-right:hover {
+    background: var(--color-right);
+    color: #000;
+    box-shadow: 0 0 16px var(--color-right-glow);
+}
+
+/* ================= STATUS & MELODY PROMPT ================= */
+.melody-status-banner {
+    margin: 16px auto;
+    text-align: center;
+    max-width: 600px;
+    padding: 12px 24px;
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.status-title {
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.status-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.tune-visualizer-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.tune-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.2s ease;
+}
+
+.tune-dot.left-active {
+    background: var(--color-left-glow);
+    box-shadow: 0 0 12px var(--color-left-glow);
+    transform: scale(1.3);
+}
+
+.tune-dot.right-active {
+    background: var(--color-right-glow);
+    box-shadow: 0 0 12px var(--color-right-glow);
+    transform: scale(1.3);
+}
+
+.tune-dot.completed {
+    background: var(--color-success);
+    opacity: 0.8;
+}
+
+/* ================= 3D BRIDGE CANVAS / STAGE ================= */
+.bridge-viewport {
+    width: 100%;
+    max-width: 700px;
+    height: 520px;
+    margin: 0 auto 20px auto;
+    perspective: 900px;
+    overflow: hidden;
+    position: relative;
+    border-radius: 16px;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.3) 0%, rgba(7, 9, 19, 0.9) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8);
+}
+
+.bridge-path-container {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%) rotateX(42deg);
+    transform-style: preserve-3d;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 24px;
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Row of Paired Blocks */
+.bridge-row {
+    display: flex;
+    gap: 36px;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.block-tile {
+    width: 130px;
+    height: 65px;
+    border-radius: 14px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.7);
+    overflow: hidden;
+}
+
+.block-tile::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, transparent 100%);
+    border-radius: 14px 14px 0 0;
+    pointer-events: none;
+}
+
+/* Left Tile (Cyan) */
+.block-left {
+    background: linear-gradient(180deg, #0e7490 0%, #083344 100%);
+    border: 2px solid var(--color-left);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.7), inset 0 0 16px rgba(6, 182, 212, 0.3);
+}
+
+.block-left:hover {
+    transform: translateY(-6px) scale(1.05);
+    box-shadow: 0 0 30px rgba(6, 182, 212, 0.7), inset 0 0 20px rgba(6, 182, 212, 0.5);
+    border-color: #a5f3fc;
+}
+
+/* Right Tile (Magenta) */
+.block-right {
+    background: linear-gradient(180deg, #be123c 0%, #4c0519 100%);
+    border: 2px solid var(--color-right);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.7), inset 0 0 16px rgba(244, 63, 94, 0.3);
+}
+
+.block-right:hover {
+    transform: translateY(-6px) scale(1.05);
+    box-shadow: 0 0 30px rgba(244, 63, 94, 0.7), inset 0 0 20px rgba(244, 63, 94, 0.5);
+    border-color: #fecdd3;
+}
+
+/* Glowing Correct Stepped Tile */
+.block-tile.stepped-correct {
+    filter: brightness(1.4);
+    animation: pulseGlow 1.2s infinite alternate;
+}
+
+@keyframes pulseGlow {
+    from { transform: scale(1.02); }
+    to { transform: scale(1.06); filter: brightness(1.7); }
+}
+
+/* Shattering Broken Tile */
+.block-tile.shattered {
+    animation: breakShatter 0.4s forwards;
+    pointer-events: none;
+}
+
+@keyframes breakShatter {
+    0% { transform: scale(1) rotate(0deg); opacity: 1; }
+    50% { transform: scale(0.8) rotate(15deg); opacity: 0.5; }
+    100% { transform: scale(0) rotate(45deg) translateY(80px); opacity: 0; }
+}
+
+/* Start / Finish Platforms */
+.platform-start, .platform-finish {
+    width: 280px;
+    height: 50px;
+    background: rgba(30, 41, 59, 0.8);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 700;
+}
+
+.platform-finish {
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+    background: rgba(250, 204, 21, 0.1);
+    box-shadow: 0 0 20px rgba(250, 204, 21, 0.3);
+}
+
+/* Player Avatar */
+.player-avatar {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 20px #fff, 0 0 35px var(--color-gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transform: translate(-50%, -50%);
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 40;
+    pointer-events: none;
+}
+
+.player-avatar.falling {
+    animation: avatarFall 0.6s forwards;
+}
+
+@keyframes avatarFall {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    100% { transform: translate(-50%, 150px) scale(0); opacity: 0; }
+}
+
+/* ================= JUMP CONTROLS (BOTTOM) ================= */
+.jump-controls {
+    width: 100%;
+    max-width: 600px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 0 20px 24px 20px;
+}
+
+.btn-jump {
+    padding: 16px;
+    border-radius: 14px;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    border: none;
+}
+
+.btn-jump span.key-hint {
+    font-size: 11px;
+    opacity: 0.7;
+    font-family: var(--font-mono);
+}
+
+.btn-jump-left {
+    background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+    color: #000;
+    box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4);
+}
+
+.btn-jump-left:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(6, 182, 212, 0.6);
+}
+
+.btn-jump-right {
+    background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(244, 63, 94, 0.4);
+}
+
+.btn-jump-right:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(244, 63, 94, 0.6);
+}
+
+.btn-jump:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* ================= MODALS & POPUPS ================= */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(7, 9, 19, 0.85);
+    backdrop-filter: blur(10px);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--bg-surface-elevated);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 36px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.modal-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+.modal-title {
+    font-size: 26px;
+    font-weight: 900;
+    margin-bottom: 8px;
+}
+
+.modal-desc {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
+    color: #000;
+    border: none;
+    font-weight: 800;
+    font-size: 16px;
+    padding: 12px 32px;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(250, 204, 21, 0.4);
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+    transform: scale(1.04);
+    box-shadow: 0 6px 28px rgba(250, 204, 21, 0.6);
+}
