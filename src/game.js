@@ -39,7 +39,6 @@
             return this.isMuted;
         }
 
-        // Play Left Tone (Cyan, Warm synth tone - C4: 261.63 Hz)
         playLeftTone(duration = 0.35) {
             if (this.isMuted) return;
             this.init();
@@ -52,16 +51,13 @@
                 const gain = this.ctx.createGain();
                 const panner = (this.ctx.createStereoPanner) ? this.ctx.createStereoPanner() : null;
 
-                // Left panning
-                if (panner) {
-                    panner.pan.setValueAtTime(-0.6, now);
-                }
+                if (panner) panner.pan.setValueAtTime(-0.6, now);
 
                 osc.type = 'triangle';
-                osc.frequency.setValueAtTime(261.63, now); // C4
+                osc.frequency.setValueAtTime(261.63, now);
 
                 subOsc.type = 'sine';
-                subOsc.frequency.setValueAtTime(523.25, now); // C5 harmonic overtone
+                subOsc.frequency.setValueAtTime(523.25, now);
 
                 gain.gain.setValueAtTime(0.001, now);
                 gain.gain.linearRampToValueAtTime(0.3, now + 0.03);
@@ -84,7 +80,6 @@
             } catch (e) { }
         }
 
-        // Play Right Tone (Magenta, Crisp crystal chime - G4: 392.00 Hz)
         playRightTone(duration = 0.35) {
             if (this.isMuted) return;
             this.init();
@@ -97,16 +92,13 @@
                 const gain = this.ctx.createGain();
                 const panner = (this.ctx.createStereoPanner) ? this.ctx.createStereoPanner() : null;
 
-                // Right panning
-                if (panner) {
-                    panner.pan.setValueAtTime(0.6, now);
-                }
+                if (panner) panner.pan.setValueAtTime(0.6, now);
 
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(392.00, now); // G4
+                osc.frequency.setValueAtTime(392.00, now);
 
                 shimmer.type = 'triangle';
-                shimmer.frequency.setValueAtTime(783.99, now); // G5 harmonic
+                shimmer.frequency.setValueAtTime(783.99, now);
 
                 gain.gain.setValueAtTime(0.001, now);
                 gain.gain.linearRampToValueAtTime(0.3, now + 0.02);
@@ -129,7 +121,6 @@
             } catch (e) { }
         }
 
-        // Play Block Shatter / Fall Crunch Sound
         playShatter() {
             if (this.isMuted) return;
             this.init();
@@ -155,14 +146,13 @@
             } catch (e) { }
         }
 
-        // Play Level Complete Fanfare
         playLevelComplete() {
             if (this.isMuted) return;
             this.init();
             if (!this.ctx) return;
 
             try {
-                const notes = [261.63, 329.63, 392.00, 523.25]; // C E G C
+                const notes = [261.63, 329.63, 392.00, 523.25];
                 const now = this.ctx.currentTime;
 
                 notes.forEach((freq, idx) => {
@@ -186,7 +176,6 @@
             } catch (e) { }
         }
 
-        // Play Grand Victory Fanfare
         playGrandVictory() {
             if (this.isMuted) return;
             this.init();
@@ -224,7 +213,6 @@
             } catch (e) { }
         }
 
-        // Cancel any currently playing sequence
         cancelMelody() {
             if (this.activeMelodyTimeout) {
                 clearTimeout(this.activeMelodyTimeout);
@@ -232,13 +220,12 @@
             }
         }
 
-        // Play full melody sequence
-        playMelody(sequence, onNoteStart, onComplete) {
+        // Updated to accept variable tempos
+        playMelody(sequence, tempo, onNoteStart, onComplete) {
             this.cancelMelody();
             this.init();
 
             let idx = 0;
-            const tempo = 450; // ms per note
 
             const playNext = () => {
                 if (idx < sequence.length) {
@@ -296,7 +283,6 @@
             requestAnimationFrame(() => this.loop());
         }
 
-        // Shatter block into tumbling fragments
         spawnBlockShatter(x, y, color = '#f43f5e', count = 35) {
             for (let i = 0; i < count; i++) {
                 const angle = Math.random() * Math.PI * 2;
@@ -317,7 +303,6 @@
             }
         }
 
-        // Glowing footstep ripple ring
         spawnStepRing(x, y, color = '#22d3ee') {
             this.rings.push({
                 x, y,
@@ -355,7 +340,6 @@
             if (!this.ctx || !this.canvas) return;
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-            // Render Rings
             for (const r of this.rings) {
                 this.ctx.save();
                 this.ctx.globalAlpha = Math.max(0, r.alpha);
@@ -369,7 +353,6 @@
                 this.ctx.restore();
             }
 
-            // Render Particles
             for (const p of this.particles) {
                 this.ctx.save();
                 this.ctx.globalAlpha = Math.max(0, p.alpha);
@@ -392,31 +375,41 @@
             level: 1,
             name: "The Whispering Steps",
             length: 4, 
+            tempo: 500, // Standard pace
+            blind: false,
             desc: "Listen to the 4-beat melody and hop on the corresponding blocks."
         },
         {
             level: 2,
             name: "The Dual Echoes",
             length: 6,
+            tempo: 450, // Slightly faster
+            blind: false,
             desc: "A 6-beat sequence. Alternate your focus between both tones."
         },
         {
             level: 3,
             name: "The Harmonic Rift",
             length: 8,
-            desc: "8 steps ahead. Double notes begin to test your rhythm memory."
+            tempo: 350, // Tempo Ramp mechanic introduced
+            blind: false,
+            desc: "8 steps ahead. The tempo increases to test your reflexes."
         },
         {
             level: 4,
             name: "The Chasm Symphony",
             length: 10,
-            desc: "10 steps across the abyss. Pay close attention to the transitions."
+            tempo: 300, 
+            blind: true, // Blind Mode mechanic introduced
+            desc: "10 steps. BLIND MODE: Visualizer dots are hidden during preview. Rely purely on audio."
         },
         {
             level: 5,
             name: "The Master Melody",
             length: 12,
-            desc: "The ultimate 12-beat sonic bridge. Cross it to claim victory!"
+            tempo: 220, // Extreme speed
+            blind: true,
+            desc: "12 high-speed beats. Pure audio memory required!"
         }
     ];
 
@@ -437,11 +430,18 @@
         init() {
             this.particles.start();
             this.setupUIListeners();
-            this.loadLevel(0);
+            
+            // Connect the start screen button to load the game
+            const btnStart = document.getElementById('btn-start-game');
+            if (btnStart) {
+                btnStart.addEventListener('click', () => {
+                    document.getElementById('modal-start').classList.remove('active');
+                    this.loadLevel(0);
+                });
+            }
         }
 
         setupUIListeners() {
-            // Practice buttons
             const btnPracLeft = document.getElementById('btn-practice-left');
             const btnPracRight = document.getElementById('btn-practice-right');
             if (btnPracLeft) {
@@ -455,15 +455,6 @@
                 });
             }
 
-            // Replay tune button (Audio only)
-            const btnReplay = document.getElementById('btn-replay-tune');
-            if (btnReplay) {
-                btnReplay.addEventListener('click', () => {
-                    this.playCurrentLevelTune(true);
-                });
-            }
-
-            // Bottom Jump Buttons
             const btnJumpLeft = document.getElementById('btn-jump-left');
             const btnJumpRight = document.getElementById('btn-jump-right');
             if (btnJumpLeft) {
@@ -473,7 +464,6 @@
                 btnJumpRight.addEventListener('click', () => this.handlePlayerStep('right'));
             }
 
-            // Sound Toggle
             const btnMute = document.getElementById('btn-toggle-sound');
             if (btnMute) {
                 btnMute.addEventListener('click', () => {
@@ -482,7 +472,6 @@
                 });
             }
 
-            // Victory restart button
             const btnRestartAll = document.getElementById('btn-restart-game');
             if (btnRestartAll) {
                 btnRestartAll.addEventListener('click', () => {
@@ -492,7 +481,6 @@
                 });
             }
 
-            // Keyboard navigation
             window.addEventListener('keydown', (e) => {
                 if (this.isPlayingMelody || this.isPlayerMoving) return;
 
@@ -500,8 +488,6 @@
                     this.handlePlayerStep('left');
                 } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
                     this.handlePlayerStep('right');
-                } else if (e.key === 'r' || e.key === 'R' || e.key === ' ') {
-                    if (btnReplay) btnReplay.click();
                 }
             });
         }
@@ -511,12 +497,10 @@
             this.currentStep = 0;
             const levelData = LEVELS[this.currentLevelIndex];
 
-            // NEW: Randomly generate the sequence pattern for this specific playthrough
             levelData.sequence = Array.from({ length: levelData.length }, () =>
                 Math.random() < 0.5 ? 'left' : 'right'
             );
 
-            // Update HUD
             const levelEl = document.getElementById('hud-level-badge');
             const deathEl = document.getElementById('hud-death-count');
             const statusTitle = document.getElementById('status-title');
@@ -531,7 +515,6 @@
             this.renderVisualizerDots();
             this.updateAvatarPosition();
 
-            // Automatically play tune with a small intro delay
             setTimeout(() => {
                 this.playCurrentLevelTune();
             }, 500);
@@ -545,20 +528,17 @@
             const levelData = LEVELS[this.currentLevelIndex];
             const totalSteps = levelData.sequence.length;
 
-            // Start Platform (Bottom)
             const startPlatform = document.createElement('div');
             startPlatform.className = 'platform-start';
             startPlatform.id = 'tile-start';
             startPlatform.textContent = 'START PLATFORM';
             bridgeContainer.appendChild(startPlatform);
 
-            // Step Rows
             for (let i = 0; i < totalSteps; i++) {
                 const row = document.createElement('div');
                 row.className = 'bridge-row';
                 row.id = `bridge-row-${i}`;
 
-                // Left Tile (Cyan - No text)
                 const leftTile = document.createElement('div');
                 leftTile.className = 'block-tile block-left';
                 leftTile.id = `tile-${i}-left`;
@@ -566,7 +546,6 @@
                     if (i === this.currentStep) this.handlePlayerStep('left');
                 });
 
-                // Right Tile (Magenta - No text)
                 const rightTile = document.createElement('div');
                 rightTile.className = 'block-tile block-right';
                 rightTile.id = `tile-${i}-right`;
@@ -579,14 +558,12 @@
                 bridgeContainer.appendChild(row);
             }
 
-            // Finish Platform (Top)
             const finishPlatform = document.createElement('div');
             finishPlatform.className = 'platform-finish';
             finishPlatform.id = `tile-finish`;
             finishPlatform.textContent = 'FINISH PORTAL ✦';
             bridgeContainer.appendChild(finishPlatform);
 
-            // Player Avatar
             let avatar = document.getElementById('player-avatar');
             if (!avatar) {
                 avatar = document.createElement('div');
@@ -637,7 +614,6 @@
                 avatar.style.top = `${y}px`;
             }
 
-            // Auto-scroll the bridge container to keep the current step in view
             const bridgeContainer = document.getElementById('bridge-path-container');
             if (bridgeContainer) {
                 const offset = this.currentStep * 45;
@@ -645,29 +621,28 @@
             }
         }
 
-        playCurrentLevelTune(isReplay = false) {
+        playCurrentLevelTune() {
             if (this.isPlayingMelody) return;
             this.isPlayingMelody = true;
             this.setJumpControlsEnabled(false);
 
             const statusTitle = document.getElementById('status-title');
             if (statusTitle) {
-                statusTitle.innerHTML = isReplay 
-                    ? '🎧 <em>Replaying melody (Audio only)...</em>' 
-                    : '🎵 <em>Listen carefully to the melody...</em>';
+                statusTitle.innerHTML = '🎵 <em>Listen carefully to the melody...</em>';
             }
 
-            // Reset dots to neutral blank state
             document.querySelectorAll('.tune-dot').forEach(d => {
                 d.className = 'tune-dot';
             });
 
             const levelData = LEVELS[this.currentLevelIndex];
+            
             this.sound.playMelody(
                 levelData.sequence,
+                levelData.tempo,
                 (noteIdx, noteType) => {
-                    // Only display visual dots during initial preview, NOT when replaying
-                    if (!isReplay) {
+                    // Visualizer displays conditionally based on the new "Blind" mechanic
+                    if (!levelData.blind) {
                         const dot = document.getElementById(`dot-${noteIdx}`);
                         if (dot) {
                             dot.className = `tune-dot ${noteType}-active`;
@@ -678,7 +653,6 @@
                     this.isPlayingMelody = false;
                     this.setJumpControlsEnabled(true);
 
-                    // Completely clear/hide the pattern dots so the player must rely on memory
                     document.querySelectorAll('.tune-dot').forEach(d => {
                         d.className = 'tune-dot';
                     });
@@ -693,11 +667,9 @@
         setJumpControlsEnabled(enabled) {
             const btnLeft = document.getElementById('btn-jump-left');
             const btnRight = document.getElementById('btn-jump-right');
-            const btnReplay = document.getElementById('btn-replay-tune');
 
             if (btnLeft) btnLeft.disabled = !enabled;
             if (btnRight) btnRight.disabled = !enabled;
-            if (btnReplay) btnReplay.disabled = !enabled;
         }
 
         handlePlayerStep(choice) {
@@ -710,7 +682,6 @@
             this.isPlayerMoving = true;
 
             if (choice === correctChoice) {
-                // ================= CORRECT STEP =================
                 if (choice === 'left') {
                     this.sound.playLeftTone();
                 } else {
@@ -723,14 +694,12 @@
                     this.particles.spawnStepRing(rect.left + rect.width / 2, rect.top + rect.height / 2, choice === 'left' ? '#22d3ee' : '#fb7185');
                 }
 
-                // Neutral step progression dot indicator (does not reveal left/right colors)
                 const dot = document.getElementById(`dot-${this.currentStep}`);
                 if (dot) dot.classList.add('completed');
 
                 this.currentStep++;
                 this.updateAvatarPosition();
 
-                // Check for Level Completion
                 if (this.currentStep >= levelData.sequence.length) {
                     setTimeout(() => {
                         this.handleLevelVictory();
@@ -741,7 +710,6 @@
                     }, 200);
                 }
             } else {
-                // ================= WRONG STEP (DEATH) =================
                 this.sound.playShatter();
                 this.deaths++;
                 const deathEl = document.getElementById('hud-death-count');
@@ -778,7 +746,6 @@
             this.renderVisualizerDots();
             this.updateAvatarPosition();
 
-            // Replay melody
             this.playCurrentLevelTune();
         }
 
@@ -786,7 +753,6 @@
             this.sound.playLevelComplete();
 
             if (this.currentLevelIndex < LEVELS.length - 1) {
-                // Transition to Next Level
                 const nextLevelIdx = this.currentLevelIndex + 1;
                 const statusTitle = document.getElementById('status-title');
                 if (statusTitle) statusTitle.innerHTML = `🌟 <strong>LEVEL COMPLETE!</strong> Preparing Level ${nextLevelIdx + 1}...`;
@@ -796,7 +762,6 @@
                     this.loadLevel(nextLevelIdx);
                 }, 1400);
             } else {
-                // GRAND VICTORY (Completed Level 5)
                 this.sound.playGrandVictory();
                 this.isPlayerMoving = false;
 
@@ -808,7 +773,6 @@
         }
     }
 
-    // Launch Game immediately or on DOM ready
     function launch() {
         if (!window.sonicBridgeGame) {
             window.sonicBridgeGame = new SonicBridgeGame();
@@ -821,4 +785,3 @@
         launch();
     }
 })();
-
