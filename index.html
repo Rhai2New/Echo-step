@@ -30,7 +30,6 @@
         <span>Tone Test:</span>
         <button id="btn-practice-left" class="btn-practice btn-practice-left" title="Click to test Left Tone (Cyan, C4)">◀ Test Left (Cyan)</button>
         <button id="btn-practice-right" class="btn-practice btn-practice-right" title="Click to test Right Tone (Magenta, G4)">▶ Test Right (Magenta)</button>
-        <button id="btn-replay-tune" class="btn-icon" style="margin-left: 10px;" title="Replay Melody (Hotkey: R)">🔄 Replay Tune [R]</button>
     </section>
 
     <!-- Status & Visualizer Banner -->
@@ -61,6 +60,19 @@
             <span class="key-hint">[Key: D / ►]</span>
         </button>
     </footer>
+
+    <!-- Start Screen Modal -->
+    <div id="modal-start" class="modal-overlay active">
+        <div class="modal-content">
+            <div class="modal-icon">🎧</div>
+            <h2 class="modal-title">WELCOME TO ECHO STEP</h2>
+            <p class="modal-desc">
+                <strong>This game requires sound!</strong> Turn up your volume or put on headphones.<br><br>
+                Listen to the melody sequence, memorize the path of the left and right tones, and step across the abyss. One wrong step and you fall!
+            </p>
+            <button id="btn-start-game" class="btn-primary">Start Game</button>
+        </div>
+    </div>
 
     <!-- Grand Victory Modal -->
     <div id="modal-victory" class="modal-overlay">
