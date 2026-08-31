@@ -569,7 +569,7 @@
                 avatar = document.createElement('div');
                 avatar.id = 'player-avatar';
                 avatar.className = 'player-avatar';
-                avatar.textContent = '🚶';
+                avatar.textContent = '';
                 document.getElementById('bridge-viewport').appendChild(avatar);
             }
             avatar.classList.remove('falling');
